@@ -1,8 +1,33 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
 import { Header } from 'react-native-elements';
+import firebase from 'firebase';
+import db from '../config';
 
 export default class WriteStoryScreen extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            title: '',
+            author: '',
+            story: ''
+        }
+    }
+
+    submitStory = async () =>{
+        db.collection("stories").add({
+            'title' : this.state.title,
+            'author': this.state.author,
+            'story': this.state.story
+        })
+        this.setState({
+            title: '',
+            author: '',
+            story: ''
+        })
+        alert("The story has been saved!")
+    }
+
     render() {
         return (
             <View style = {styles.container}>
@@ -13,11 +38,41 @@ export default class WriteStoryScreen extends React.Component {
                     style: { color: '#fff', fontSize: 40 },
                 }}
             />
-                <TextInput style = {styles.inputBox} placeholder = "Title of the story" backgroundColor= "#4EE6C0" color = "#236655"/>
-                <TextInput style = {styles.inputBox} placeholder = "Author" backgroundColor= "#56FEA5" color = "#2B8053"/>
-                <TextInput style = {styles.multilineBox} placeholder = "Write the story here..." multiline = {true}/>
+                <TextInput
+                style = {styles.inputBox}
+                placeholder = "Title of the story"
+                backgroundColor= "#4EE6C0"
+                color = "#236655"
+                value = {this.state.title}
+                onChangeText={title => {
+                    this.setState({
+                        title: title
+                    }); }}/>
+                <TextInput
+                style = {styles.inputBox}
+                placeholder = "Author"
+                backgroundColor= "#56FEA5" color = "#2B8053"
+                value = {this.state.author}
+                onChangeText={author => {
+                    this.setState({
+                        author: author
+                    }); }}/>
+                <TextInput
+                style = {styles.multilineBox}
+                placeholder = "Write the story here..."
+                multiline = {true}
+                value = {this.state.story}
+                onChangeText={story => {
+                    this.setState({
+                        story: story
+                    }); }}/>
 
-                <TouchableOpacity style = {styles.button}><Text style = {styles.buttonText}>Submit</Text></TouchableOpacity>
+                <TouchableOpacity
+                style = {styles.button}
+                onPress={async()=>{
+                    await this.submitStory();
+                }}><Text style = {styles.buttonText}>Submit</Text>
+                </TouchableOpacity>
             </View>
         );
     }

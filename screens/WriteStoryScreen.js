@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ToastAndroid, KeyboardAvoidingView, Platform } from 'react-native';
 import { Header } from 'react-native-elements';
 import firebase from 'firebase';
 import db from '../config';
@@ -15,27 +15,52 @@ export default class WriteStoryScreen extends React.Component {
     }
 
     submitStory = async () =>{
-        db.collection("stories").add({
-            'title' : this.state.title,
-            'author': this.state.author,
-            'story': this.state.story
-        })
-        this.setState({
-            title: '',
-            author: '',
-            story: ''
-        })
-        alert("The story has been saved!")
+        var title=this.state.title
+        var author=this.state.author
+        var story=this.state.story
+
+        if(title && author && story){
+            db.collection("stories").add({
+                'title' : this.state.title,
+                'author': this.state.author,
+                'story': this.state.story
+            })
+            
+            ToastAndroid.show("The story has been saved!", ToastAndroid.SHORT);
+
+            this.setState({
+                title: '',
+                author: '',
+                story: ''
+            })
+        }   else if(!title && !author && !story){
+            ToastAndroid.show("Please fill all the entries",ToastAndroid.SHORT)
+        }   else if(!title && !author){
+        ToastAndroid.show("Please type the title and author",ToastAndroid.SHORT)
+        }   else if(!story && !title){
+            ToastAndroid.show("Please type the story and title",ToastAndroid.SHORT)
+        }   else if(!author && !story){
+            ToastAndroid.show("Please type the author and story",ToastAndroid.SHORT)
+        }   else if(!title){
+            ToastAndroid.show("Please type the title",ToastAndroid.SHORT)
+        }   else if(!author){
+            ToastAndroid.show("Please type the author",ToastAndroid.SHORT)
+        }   else if(!story){
+            ToastAndroid.show("Please type the story",ToastAndroid.SHORT)
+        }
     }
 
     render() {
         return (
-            <View style = {styles.container}>
+            <KeyboardAvoidingView style = {styles.container} behavior = "height" enabled>
                 <Header
                     backgroundColor={'#56A0FE'}
                     centerComponent={{
                     text: 'Story Hub',
-                    style: { color: '#fff', fontSize: 40 },
+                    style: { color: '#fff', fontSize: 40, marginBottom: 30 },
+                }}
+                containerStyle={{
+                    marginBottom: 20
                 }}
             />
                 <TextInput
@@ -73,7 +98,7 @@ export default class WriteStoryScreen extends React.Component {
                     await this.submitStory();
                 }}><Text style = {styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -81,6 +106,7 @@ export default class WriteStoryScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#4EB9E6'
     },
@@ -106,7 +132,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#AEFAFD',
         marginTop: 15,
         width: 150,
-        height: 50
+        height: 50,
+        alignSelf: 'center'
     },
     buttonText:{
         fontSize: 15,

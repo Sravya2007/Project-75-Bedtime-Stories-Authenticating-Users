@@ -36,7 +36,7 @@ export default class WriteStoryScreen extends React.Component {
         }   else if(!title && !author && !story){
             ToastAndroid.show("Please fill all the entries",ToastAndroid.SHORT)
         }   else if(!title && !author){
-        ToastAndroid.show("Please type the title and author",ToastAndroid.SHORT)
+            ToastAndroid.show("Please type the title and author",ToastAndroid.SHORT)
         }   else if(!story && !title){
             ToastAndroid.show("Please type the story and title",ToastAndroid.SHORT)
         }   else if(!author && !story){
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#4EB9E6'
     },
     inputBox:{

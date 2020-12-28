@@ -76,7 +76,8 @@ export default class WriteStoryScreen extends React.Component {
                 <TextInput
                 style = {styles.inputBox}
                 placeholder = "Author"
-                backgroundColor= "#56FEA5" color = "#2B8053"
+                backgroundColor= "#56FEA5"
+                color = "#2B8053"
                 value = {this.state.author}
                 onChangeText={author => {
                     this.setState({

@@ -28,12 +28,15 @@ export default class LoginScreen extends React.Component {
                     case 'auth/invalid-email':
                         alert('The provided email or password is invalid.')
                         console.log('The provided email or password is invalid.')
+                        break;
                     case 'auth/invalid-password':
                         alert('The provided email or password is invalid.')
                         console.log('The provided email or password is invalid.')
+                        break;
                     case 'auth/wrong-password':
                         alert('The provided email or password is invalid.')
                         console.log('The provided email or password is invalid.')
+                        break;
                 }
             }
         } else {
